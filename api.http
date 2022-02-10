@@ -10,3 +10,14 @@ Content-Type: application/json
 ###
 GET http://localhost:3000/tweets
 
+###
+
+GET http://localhost:3000/mail-list
+
+###
+POST http://localhost:3000/mail-list
+Content-Type: application/json
+
+{
+  "emails" : ["user@test.com", "user1@test.com", "user2@test.com", "user3@test.com"]
+}

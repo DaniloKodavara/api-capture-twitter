@@ -1,11 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Post, Res } from '@nestjs/common';
 import { MailListService } from './mail-list.service';
 import { CreateMailListDto } from './dto/create-mail-list.dto';
-import { UpdateMailListDto } from './dto/update-mail-list.dto';
 
 @Controller('mail-list')
 export class MailListController {
-  constructor(private readonly mailListService: MailListService) {}
+  constructor(private readonly mailListService: MailListService) {
+  }
 
   @Post()
   create(@Body() createMailListDto: CreateMailListDto) {
@@ -13,22 +13,11 @@ export class MailListController {
   }
 
   @Get()
-  findAll() {
-    return this.mailListService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.mailListService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMailListDto: UpdateMailListDto) {
-    return this.mailListService.update(+id, updateMailListDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.mailListService.remove(+id);
+  async findOne(@Res() res) {
+    const mail = await this.mailListService.findOne();
+    console.log(mail);
+    return !mail
+      ? res.status(HttpStatus.NO_CONTENT).json(null)
+      : res.json(mail);
   }
 }
